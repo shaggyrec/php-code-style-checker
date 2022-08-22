@@ -5,6 +5,7 @@ namespace Shaggyrec\CodeStyleChecker;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
+use Shaggyrec\CodeStyleChecker\Exception\CodeStyle;
 use Shaggyrec\CodeStyleChecker\Exception\MandatoryOption;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -45,11 +46,17 @@ register_shutdown_function(function () use ($logger) {
     }
 });
 
-echo (new Checker($options->standard()))
-    ->check(
-        (
-            $options->hasOption(CliOptions::OPTION_DIFF)
-            ? (new GitDiffParser())->parse(gitDiff())
-            : new CheckingFiles(explode(PHP_EOL, $options->src()))
-        )->rootPath(getRootPath())
-    );
+try {
+    (new Checker($options->standard()))
+        ->check(
+            (
+                $options->hasOption(CliOptions::OPTION_DIFF)
+                    ? (new GitDiffParser())->parse(gitDiff())
+                    : new CheckingFiles(explode(PHP_EOL, $options->src()))
+            )->rootPath(getRootPath())
+        );
+    exit(0);
+} catch (CodeStyle $exception) {
+    echo $exception->getMessage();
+    exit(1);
+}

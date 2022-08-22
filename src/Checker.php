@@ -2,6 +2,8 @@
 
 namespace Shaggyrec\CodeStyleChecker;
 
+use Shaggyrec\CodeStyleChecker\Exception\CodeStyle;
+
 class Checker
 {
     private ?string $standard;
@@ -11,14 +13,16 @@ class Checker
         $this->standard = $standard;
     }
 
-    public function check(CheckingFiles $files): string|null|bool
+    public function check(CheckingFiles $files)
     {
-        $resultOfCS = $this->runPhpCS($files);
-        if (!$files->withLines()) {
-           return $resultOfCS;
+        $result = $this->runPhpCS($files);
+        if ($files->withLines()) {
+           $result = self::filterRows($result, $files);
         }
 
-        return self::filterRows($resultOfCS, $files);
+        if ($result) {
+            throw new CodeStyle($result);
+        }
     }
 
 
@@ -26,7 +30,7 @@ class Checker
     {
         return shell_exec(
             sprintf(
-                '%s/../vendor/bin/phpcs %s --standard=%s -n',
+                '%s/../vendor/bin/phpcs %s --standard=%s -ns',
                 __DIR__,
                 escapeshellarg($files->filesToString()),
                 $this->standard,

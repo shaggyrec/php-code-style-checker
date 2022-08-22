@@ -7,7 +7,6 @@
         <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace" />
         <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps" />
     </rule>
-
     <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
     <rule ref="PEAR.Functions.ValidDefaultValue"/>
     <rule ref="Generic.Formatting.MultipleStatementAlignment"/>
@@ -15,5 +14,4 @@
     <rule ref="MySource.Debug.DebugCode" />
     <rule ref="Squiz.PHP.CommentedOutCode" />
     <rule ref="Squiz.WhiteSpace.ControlStructureSpacing" />
-    <rule ref="Squiz.WhiteSpace.OperatorSpacing" />
 </ruleset>
