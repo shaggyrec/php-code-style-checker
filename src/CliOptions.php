@@ -14,6 +14,7 @@ class CliOptions
     private const OPTION_VERBOSE = 'verbose';
     private const OPTION_LOG_TO = 'log';
     private const OPTION_STANDARD = 'standard';
+    private const OPTION_DEBUG = 'debug';
 
     /**
      * @var array of options, passed to cli script
@@ -76,6 +77,14 @@ class CliOptions
     public function isVerbose(): bool
     {
         return $this->options[self::OPTION_VERBOSE] ?? false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDebug(): bool
+    {
+        return $this->options[self::OPTION_DEBUG] ?? false;
     }
 
     /**

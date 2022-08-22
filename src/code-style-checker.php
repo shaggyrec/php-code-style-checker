@@ -53,7 +53,8 @@ try {
                 $options->hasOption(CliOptions::OPTION_DIFF)
                     ? (new GitDiffParser())->parse(gitDiff())
                     : new CheckingFiles(explode(PHP_EOL, $options->src()))
-            )->rootPath(getRootPath())
+            )->rootPath(getRootPath()),
+            $options->isDebug(),
         );
     exit(0);
 } catch (CodeStyle $exception) {

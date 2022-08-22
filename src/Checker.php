@@ -13,9 +13,9 @@ class Checker
         $this->standard = $standard;
     }
 
-    public function check(CheckingFiles $files)
+    public function check(CheckingFiles $files, bool $debug = false)
     {
-        $result = $this->runPhpCS($files);
+        $result = $this->runPhpCS($files, $debug);
         if ($files->withLines()) {
            $result = self::filterRows($result, $files);
         }
@@ -25,15 +25,15 @@ class Checker
         }
     }
 
-
-    private function runPhpCS(CheckingFiles $files): bool|string|null
+    private function runPhpCS(CheckingFiles $files, bool $debug = false): bool|string|null
     {
         return shell_exec(
             sprintf(
-                '%s/../vendor/bin/phpcs %s --standard=%s -ns',
+                '%s/../vendor/bin/phpcs %s --standard=%s -n%s',
                 __DIR__,
                 escapeshellarg($files->filesToString()),
                 $this->standard,
+                $debug ? 's' : '',
             ),
         );
     }
