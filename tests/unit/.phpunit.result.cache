@@ -1,0 +1,1 @@
+{"version":1,"defects":{"Shaggyrec\\CodeStyleChecker\\Tests\\unit\\FunctionsTest::testParsesGitDiff":4,"Shaggyrec\\CodeStyleChecker\\Tests\\unit\\GitDiffParserTest::testParsesGitDiff":4},"times":{"Shaggyrec\\CodeStyleChecker\\Tests\\unit\\FunctionsTest::testParsesGitDiff":0.001,"Shaggyrec\\CodeStyleChecker\\Tests\\unit\\GitDiffParserTest::testParsesGitDiff":0.001}}

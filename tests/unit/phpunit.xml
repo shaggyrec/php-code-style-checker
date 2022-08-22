@@ -1,0 +1,13 @@
+<phpunit
+    bootstrap="./../../vendor/autoload.php"
+    colors="true"
+    stopOnError="true"
+    stopOnFailure="true"
+    stopOnIncomplete="false"
+    stopOnSkipped="false"
+    beStrictAboutTestsThatDoNotTestAnything="false"
+>
+    <php>
+        <const name="UNIT_TESTS_IN_PROGRESS" value=""/>
+    </php>
+</phpunit>

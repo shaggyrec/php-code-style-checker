@@ -1,0 +1,13 @@
+{
+    "main": "src/code-style-checker.php",
+    "output": "code-style-checker.phar",
+    "files": [
+        "composer.json",
+        "composer.lock",
+        "phpcs.php"
+    ],
+    "directories": ["vendor"],
+    "banner": [
+        "Code Style Checker"
+    ]
+}

@@ -1,0 +1,60 @@
+<?php
+
+namespace Shaggyrec\CodeStyleChecker;
+
+class Checker
+{
+    private ?string $standard;
+
+    public function __construct(?string $standard)
+    {
+        $this->standard = $standard;
+    }
+
+    public function check(CheckingFiles $files): string|null|bool
+    {
+        $resultOfCS = $this->runPhpCS($files);
+        if (!$files->withLines()) {
+           return $resultOfCS;
+        }
+
+        return self::filterRows($resultOfCS, $files);
+    }
+
+
+    private function runPhpCS(CheckingFiles $files): bool|string|null
+    {
+        return shell_exec(
+            sprintf(
+                '%s/../vendor/bin/phpcs %s --standard=%s -n',
+                __DIR__,
+                escapeshellarg($files->filesToString()),
+                $this->standard,
+            ),
+        );
+    }
+
+    private static function filterRows(string $phpCsResult, CheckingFiles $files): string
+    {
+        $res = '';
+        $arrayErrorsLines = explode(PHP_EOL, $phpCsResult);
+
+        $currentFile = null;
+        foreach ($arrayErrorsLines as $line) {
+            if (str_starts_with($line, 'FILE: ')) {
+                $currentFile = str_replace('FILE: ', '', $line);
+                continue;
+            }
+
+            if (
+                $currentFile
+                && preg_match('/^(\d+) \| /', trim($line), $matches)
+                && in_array((int)$matches[1], $files->lines($currentFile))
+            ) {
+                $res .= $line . PHP_EOL;
+            }
+        }
+
+        return $res;
+    }
+}

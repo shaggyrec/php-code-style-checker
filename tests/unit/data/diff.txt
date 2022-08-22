@@ -1,0 +1,56 @@
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+index dae7a0e23d..cc7c42c736 100644
+--- a/.gitlab-ci.yml
++++ b/.gitlab-ci.yml
+@@ -44,0 +45,6 @@ Cherry-pick:
++Lint:
++  stage: test
++  script:
++    - ./ci/lint/phpcs.phar --standard=PSR12,PSR1 -ns --colors $(git diff --merge-base develop --name-only)
++  only:
++    - merge_requests
+diff --git a/application/api/controllers/PortmoneController.php b/application/api/controllers/PortmoneController.php
+index f9778ac3c1..44dd54cc16 100644
+--- a/application/api/controllers/PortmoneController.php
++++ b/application/api/controllers/PortmoneController.php
+@@ -135,0 +136,7 @@ class Api_PortmoneController extends ApiBaseObjectController
++
++        $a = [
++            'a' => 2,
++           'b' =>3
++        ];
++
++        $b=$c??$a;
+@@ -146,0 +154,3 @@ class Api_PortmoneController extends ApiBaseObjectController
++        $a = ['a' => 2,
++            'b' =>3
++        ];
+diff --git a/ci/lint/ff.xml b/ci/lint/ff.xml
+new file mode 100644
+index 0000000000..0d5254e39a
+--- /dev/null
++++ b/ci/lint/ff.xml
+@@ -0,0 +1,19 @@
++<?xml version="1.0"?>
++<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="FF">
++    <description>FF coding standard.</description>
++    <rule ref="Squiz.Arrays.ArrayDeclaration.NoComma" />
++    <rule ref="PSR12" />
++    <rule ref="PSR1">
++        <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace" />
++        <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps" />
++    </rule>
++
++    <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
++    <rule ref="PEAR.Functions.ValidDefaultValue"/>
++    <rule ref="Generic.Formatting.MultipleStatementAlignment"/>
++<!--    <rule ref="PEAR.Commenting.FunctionComment" />-->
++    <rule ref="MySource.Debug.DebugCode" />
++    <rule ref="Squiz.PHP.CommentedOutCode" />
++    <rule ref="Squiz.WhiteSpace.ControlStructureSpacing" />
++    <rule ref="Squiz.WhiteSpace.OperatorSpacing" />
++</ruleset>
+diff --git a/ci/lint/phpcs.phar b/ci/lint/phpcs.phar
+new file mode 100755
+index 0000000000..f9107c57bc
+Binary files /dev/null and b/ci/lint/phpcs.phar differ
