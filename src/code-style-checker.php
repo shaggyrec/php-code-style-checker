@@ -65,4 +65,7 @@ try {
 } catch (CodeStyle $exception) {
     echo $exception->getMessage();
     exit(1);
+} catch (\Exception $exception) {
+    $logger->critical($exception->getMessage());
+    exit(1);
 }

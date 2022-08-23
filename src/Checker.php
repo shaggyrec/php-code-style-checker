@@ -7,6 +7,7 @@ use Shaggyrec\CodeStyleChecker\Exception\CodeStyle;
 class Checker
 {
     private const RESULT_LINE_FILE_PREFIX = 'FILE: ';
+    private const RESULT_LINE_SUCCESS_DETECTION = 'ERRORS AFFECTING';
 
     private ?string $standard;
 
@@ -15,6 +16,13 @@ class Checker
         $this->standard = $standard;
     }
 
+    /**
+     * @param CheckingFiles $files
+     * @param bool $debug
+     * @throws CodeStyle
+     * @throws Exception\Checker
+     * @return void
+     */
     public function check(CheckingFiles $files, bool $debug = false): void
     {
         $result = $this->runPhpCS($files, $debug);
@@ -27,9 +35,15 @@ class Checker
         }
     }
 
+    /**
+     * @param CheckingFiles $files
+     * @param bool $debug
+     * @throws Exception\Checker
+     * @return bool|string|null
+     */
     private function runPhpCS(CheckingFiles $files, bool $debug = false): bool|string|null
     {
-        return shell_exec(
+        exec(
             sprintf(
                 '%s/../vendor/bin/phpcs %s --standard=%s -n%s',
                 __DIR__,
@@ -37,9 +51,27 @@ class Checker
                 $this->standard,
                 $debug ? 's' : '',
             ),
+            $r,
+            $code
         );
+
+        $result = implode(PHP_EOL, $r);
+
+        if (
+            $code !== 0
+            && !str_contains($result, self::RESULT_LINE_SUCCESS_DETECTION)
+        ) {
+            throw new \Shaggyrec\CodeStyleChecker\Exception\Checker($result);
+        }
+
+        return $result;
     }
 
+    /**
+     * @param string $phpCsResult
+     * @param CheckingFiles $files
+     * @return string
+     */
     private static function filterRows(string $phpCsResult, CheckingFiles $files): string
     {
         $res = '';
@@ -48,8 +80,8 @@ class Checker
         $currentFile = null;
         foreach ($arrayErrorsLines as $line) {
             $cleanLine = removeTerminalCodes($line);
-            if (str_starts_with($cleanLine, 'FILE: ')) {
-                $currentFile = str_replace('FILE: ', '', $cleanLine);
+            if (str_starts_with($cleanLine, self::RESULT_LINE_FILE_PREFIX)) {
+                $currentFile = str_replace(self::RESULT_LINE_FILE_PREFIX, '', $cleanLine);
                 $res .=  PHP_EOL . $line . PHP_EOL;
                 continue;
             }

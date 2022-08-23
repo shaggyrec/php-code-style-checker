@@ -108,7 +108,7 @@ class CliOptions
      */
     public function standard(): ?string
     {
-        return $this->options[self::OPTION_STANDARD] ?? __DIR__ . '/../standard/ff.xml';
+        return $this->options[self::OPTION_STANDARD] ?? __DIR__ . '/../src/Standards/FF/ruleset.xml';
     }
 
     /**
