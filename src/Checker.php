@@ -13,7 +13,7 @@ class Checker
         $this->standard = $standard;
     }
 
-    public function check(CheckingFiles $files, bool $debug = false)
+    public function check(CheckingFiles $files, bool $debug = false): void
     {
         $result = $this->runPhpCS($files, $debug);
         if ($files->withLines()) {

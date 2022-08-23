@@ -16,12 +16,19 @@ class GitDiffParser
 
     private array $result = [];
 
+    /**
+     * @param array|null $fileExts
+     */
     public function __construct(?array $fileExts = ['php'])
     {
         $this->fileExts = $fileExts;
     }
 
-    public function parse(string $diff)
+    /**
+     * @param string $diff
+     * @return CheckingFiles
+     */
+    public function parse(string $diff): CheckingFiles
     {
         $line = strtok($diff, PHP_EOL);
         do {
@@ -31,17 +38,28 @@ class GitDiffParser
         return new CheckingFiles($this->result);
     }
 
+    /**
+     * @return array
+     */
     public function files(): array
     {
         return array_keys($this->result);
     }
 
+    /**
+     * @param string $line
+     * @return void
+     */
     private function processLine(string $line)
     {
         $this->detectFile($line);
         $this->processLineData($line);
     }
 
+    /**
+     * @param $line
+     * @return void
+     */
     private function detectFile($line)
     {
         if (str_starts_with($line, self::FILE_LINE_PREFIX)) {
@@ -54,7 +72,11 @@ class GitDiffParser
         }
     }
 
-    private function processLineData($line)
+    /**
+     * @param $line
+     * @return void
+     */
+    private function processLineData($line): void
     {
         if (
             $this->currentFile !== null
