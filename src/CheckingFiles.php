@@ -58,11 +58,10 @@ class CheckingFiles
 
     /**
      * @param string $file
-     * @return mixed
      */
-    public function lines(string $file)
+    public function lines(string $file): array
     {
-        return $this->lines[$file] ?? $this->lines[str_replace($this->rootPath . '/', '', $file)];
+        return $this->lines[$file] ?? $this->lines[str_replace($this->rootPath, '', $file)];
     }
 
     /**

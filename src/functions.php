@@ -48,3 +48,12 @@ Optional:
 TEXT;
 
 }
+
+/**
+ * @param string $string
+ * @return string
+ */
+function removeTerminalCodes(string $string): string
+{
+    return preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $string);
+}

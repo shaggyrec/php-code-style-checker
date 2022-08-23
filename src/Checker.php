@@ -6,6 +6,8 @@ use Shaggyrec\CodeStyleChecker\Exception\CodeStyle;
 
 class Checker
 {
+    private const RESULT_LINE_FILE_PREFIX = 'FILE: ';
+
     private ?string $standard;
 
     public function __construct(?string $standard)
@@ -45,14 +47,16 @@ class Checker
 
         $currentFile = null;
         foreach ($arrayErrorsLines as $line) {
-            if (str_starts_with($line, 'FILE: ')) {
-                $currentFile = str_replace('FILE: ', '', $line);
+            $cleanLine = removeTerminalCodes($line);
+            if (str_starts_with($cleanLine, 'FILE: ')) {
+                $currentFile = str_replace('FILE: ', '', $cleanLine);
+                $res .=  PHP_EOL . $line . PHP_EOL;
                 continue;
             }
 
             if (
                 $currentFile
-                && preg_match('/^(\d+) \| /', trim($line), $matches)
+                && preg_match('/^(\d+) \| /', trim($cleanLine), $matches)
                 && in_array((int)$matches[1], $files->lines($currentFile))
             ) {
                 $res .= $line . PHP_EOL;

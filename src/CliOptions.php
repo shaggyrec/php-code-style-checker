@@ -59,6 +59,14 @@ class CliOptions
     }
 
     /**
+     * @return bool
+     */
+    public function isHelp(): bool
+    {
+        return $this->hasOption(self::OPTION_HELP);
+    }
+
+    /**
      * @return string
      */
     public function src(): string
