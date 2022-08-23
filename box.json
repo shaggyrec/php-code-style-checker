@@ -3,10 +3,9 @@
     "output": "code-style-checker.phar",
     "files": [
         "composer.json",
-        "composer.lock",
-        "phpcs.php"
+        "composer.lock"
     ],
-    "directories": ["vendor"],
+    "directories": ["src", "vendor"],
     "banner": [
         "Code Style Checker"
     ]
