@@ -21,6 +21,11 @@ $logger->pushHandler(
     )
 );
 
+if(count($argv) === 1 || $options->isHelp()) {
+    echo helpMessage(basename($argv[0]));
+    exit(1);
+}
+
 try {
     $options->assertMandatoryOptions();
 } catch (MandatoryOption $e) {

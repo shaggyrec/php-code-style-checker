@@ -103,6 +103,11 @@ class CliOptions
         return $this->options[self::OPTION_STANDARD] ?? __DIR__ . '/../standard/ff.xml';
     }
 
+    /**
+     * @throws ConflictOptions
+     * @throws MandatoryOption
+     * @return void
+     */
     public function assertMandatoryOptions(): void
     {
         if (!isset($this->options[self::OPTION_SRC])  && !isset($this->options[self::OPTION_DIFF])) {
