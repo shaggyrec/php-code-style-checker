@@ -7,7 +7,7 @@ use Shaggyrec\CodeStyleChecker\Exception\CodeStyle;
 class Checker
 {
     private const RESULT_LINE_FILE_PREFIX = 'FILE: ';
-    private const RESULT_LINE_SUCCESS_DETECTION = 'ERRORS AFFECTING';
+    private const RESULT_LINE_SUCCESS_DETECTION = 'FOUND';
 
     private ?string $standard;
 
@@ -46,8 +46,8 @@ class Checker
         exec(
             sprintf(
                 '%s/../vendor/bin/phpcs %s --standard=%s -n%s',
-                __DIR__,
-                escapeshellarg($files->filesToString()),
+                pathinfo(__FILE__, PATHINFO_DIRNAME),
+                $files->filesToString(),
                 $this->standard,
                 $debug ? 's' : '',
             ),

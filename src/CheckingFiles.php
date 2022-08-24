@@ -46,7 +46,7 @@ class CheckingFiles
     public function filesToString(): string
     {
         return implode(
-            PHP_EOL,
+            ' ',
             array_map(
                 function (string $file) {
                     return $this->rootPath . $file;

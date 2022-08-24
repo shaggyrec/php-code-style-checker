@@ -56,7 +56,7 @@ try {
         ->check(
             (
                 $options->hasOption(CliOptions::OPTION_DIFF)
-                    ? (new GitDiffParser())->parse(gitDiff())
+                    ? (new GitDiffParser())->parse(gitDiff($options->diff()))
                     : new CheckingFiles(explode(PHP_EOL, $options->src()))
             )->rootPath(getRootPath()),
             $options->isDebug(),

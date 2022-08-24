@@ -2,6 +2,8 @@
 
 namespace Shaggyrec\CodeStyleChecker;
 
+use Shaggyrec\CodeStyleChecker\Exception\GitDiff;
+
 /**
  * @return string
  */
@@ -13,11 +15,19 @@ function getRootPath(): string
 }
 
 /**
+ * @param string $branch
+ * @throws GitDiff
  * @return string
  */
-function gitDiff(): string
+function gitDiff(string $branch): string
 {
-    return shell_exec('git diff --merge-base develop -U0');
+    $d = shell_exec('git diff --merge-base ' . $branch . ' -U0');
+
+    if ($d === null) {
+        throw new GitDiff('Can not get git diff');
+    }
+
+    return $d;
 }
 
 /**

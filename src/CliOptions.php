@@ -32,7 +32,7 @@ class CliOptions
                 [
                     self::OPTION_HELP,
                     self::OPTION_SRC . ':',
-                    self::OPTION_DIFF,
+                    self::OPTION_DIFF . ':',
                     self::OPTION_VERBOSE,
                     self::OPTION_LOG_TO . ':',
                     self::OPTION_STANDARD . ':',
@@ -74,9 +74,12 @@ class CliOptions
         return $this->options[self::OPTION_SRC];
     }
 
-    public function diff(): string
+    /**
+     * @return string|null
+     */
+    public function diff(): ?string
     {
-        return $this->options[self::OPTION_DIFF];
+        return $this->options[self::OPTION_DIFF] ?? null;
     }
 
     /**

@@ -82,8 +82,8 @@ class GitDiffParser
             $this->currentFile !== null
             && str_starts_with($line, self::CHANGES_LINE_PREFIX)
         ) {
-            preg_match('/^@@ -(\d+),(\d+) \+(\d+),(\d+) @@/', $line, $matches);
-            for ($i = $matches[3]; $i < $matches[3] + $matches[4]; $i++) {
+            preg_match('/^@@ -(\d+),?(\d+)? \+(\d+),?(\d+)? @@/', $line, $matches);
+            for ($i = $matches[3]; $i <= $matches[3] + ($matches[4] ?? $matches[3]); $i++) {
                 $this->result[$this->currentFile][] = (int) $i;
             }
         }
