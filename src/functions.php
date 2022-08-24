@@ -47,7 +47,7 @@ Options:
 Mandatory: One and only one of --src or --diff must be specified.
 
 --src                 Path to a file or a directory with files to check
---diff                Check git diff of current brunch and merge-base
+--diff                Branch for git diff with merge-base
 
 Optional:
 --standard            Standard to check (PSR12, PSR2, Squiz, etc.) OR path to a xml-file with a standard

@@ -29,7 +29,7 @@ and use
 #### One and only one of --src or --diff must be specified.
 
 - --src                 Path to a file or a directory with files to check
-- --diff                Check git diff of current brunch and merge-base
+- --diff                Branch for git diff with merge-base
 
 ### Optional:
 
