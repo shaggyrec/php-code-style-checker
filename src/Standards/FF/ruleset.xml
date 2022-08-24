@@ -11,7 +11,10 @@
     <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
     <rule ref="PEAR.Functions.ValidDefaultValue"/>
     <rule ref="Generic.Formatting.MultipleStatementAlignment"/>
-    <rule ref="PEAR.Commenting.FunctionComment" />
+    <rule ref="PEAR.Commenting.FunctionComment">
+        <exclude name="PEAR.Commenting.FunctionComment.MissingParamComment" />
+        <exclude name="PEAR.Commenting.FunctionComment.SpacingAfterParamType" />
+    </rule>
     <rule ref="MySource.Debug.DebugCode" />
     <rule ref="Squiz.PHP.CommentedOutCode" />
     <rule ref="Squiz.WhiteSpace.ControlStructureSpacing" />

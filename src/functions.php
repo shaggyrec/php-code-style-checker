@@ -67,3 +67,29 @@ function removeTerminalCodes(string $string): string
 {
     return preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $string);
 }
+
+/**
+ * @param string $standard
+ * @param array $files
+ * @param bool $debug
+ * @return bool|string
+ */
+function phpcs(string $standard, array $files, bool $debug): bool|string
+{
+    ini_set('output_buffering', 4096);
+    ob_start();
+    $_SERVER['argv'] = [
+        '', // first argument is a script name
+        '--standard=' . $standard,
+        '-n' . (
+            $debug
+                ? 's'
+                : ''
+        ),
+        '--colors',
+        ...$files,
+    ];
+    include __DIR__ . '/../vendor/bin/phpcs';
+
+    return ob_get_clean();
+}

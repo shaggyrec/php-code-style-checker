@@ -57,6 +57,19 @@ class CheckingFiles
     }
 
     /**
+     * @return array
+     */
+    public function files(): array
+    {
+        return array_map(
+            function (string $file) {
+                return $this->rootPath . $file;
+            },
+            $this->files,
+        );
+    }
+
+    /**
      * @param string $file
      */
     public function lines(string $file): array

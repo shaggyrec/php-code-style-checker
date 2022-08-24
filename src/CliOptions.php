@@ -36,6 +36,7 @@ class CliOptions
                     self::OPTION_VERBOSE,
                     self::OPTION_LOG_TO . ':',
                     self::OPTION_STANDARD . ':',
+                    self::OPTION_DEBUG,
                 ]
             )
         );
@@ -95,7 +96,7 @@ class CliOptions
      */
     public function isDebug(): bool
     {
-        return $this->options[self::OPTION_DEBUG] ?? false;
+        return $this->hasOption(self::OPTION_DEBUG);
     }
 
     /**
@@ -111,7 +112,7 @@ class CliOptions
      */
     public function standard(): ?string
     {
-        return $this->options[self::OPTION_STANDARD] ?? __DIR__ . '/../src/Standards/FF/ruleset.xml';
+        return $this->options[self::OPTION_STANDARD] ?? __DIR__ . '/Standards/FF/ruleset.xml';
     }
 
     /**

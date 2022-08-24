@@ -26,11 +26,12 @@ class Checker
     public function check(CheckingFiles $files, bool $debug = false): void
     {
         $result = $this->runPhpCS($files, $debug);
+
         if ($files->withLines()) {
-           $result = self::filterRows($result, $files);
+            $result = self::filterRows($result, $files);
         }
 
-        if ($result) {
+        if (trim($result)) {
             throw new CodeStyle($result);
         }
     }
@@ -43,24 +44,9 @@ class Checker
      */
     private function runPhpCS(CheckingFiles $files, bool $debug = false): bool|string|null
     {
-        exec(
-            sprintf(
-                '%s/../vendor/bin/phpcs %s --standard=%s -n%s',
-                pathinfo(__FILE__, PATHINFO_DIRNAME),
-                $files->filesToString(),
-                $this->standard,
-                $debug ? 's' : '',
-            ),
-            $r,
-            $code
-        );
+        $result = phpcs($this->standard, $files->files(), $debug);
 
-        $result = implode(PHP_EOL, $r);
-
-        if (
-            $code !== 0
-            && !str_contains($result, self::RESULT_LINE_SUCCESS_DETECTION)
-        ) {
+        if (!str_contains($result, self::RESULT_LINE_SUCCESS_DETECTION)) {
             throw new \Shaggyrec\CodeStyleChecker\Exception\Checker($result);
         }
 
@@ -74,20 +60,15 @@ class Checker
      */
     private static function filterRows(string $phpCsResult, CheckingFiles $files): string
     {
-        $res = '';
         $arrayErrorsLines = explode(PHP_EOL, $phpCsResult);
 
         $currentFile = null;
-        $currentFileLines = [];
+        $fileLinesMap = [];
         foreach ($arrayErrorsLines as $line) {
             $cleanLine = removeTerminalCodes($line);
             if (str_starts_with($cleanLine, self::RESULT_LINE_FILE_PREFIX)) {
                 $currentFile = str_replace(self::RESULT_LINE_FILE_PREFIX, '', $cleanLine);
-                if (count($currentFileLines) > 1) {
-                    $res .= implode(PHP_EOL, $currentFileLines);
-                }
-                $currentFileLines = [];
-                $currentFileLines[] =  PHP_EOL . $line;
+                $fileLinesMap[$currentFile][] = PHP_EOL . $line;
                 continue;
             }
 
@@ -96,10 +77,22 @@ class Checker
                 && preg_match('/^(\d+) \| /', trim($cleanLine), $matches)
                 && in_array((int)$matches[1], $files->lines($currentFile))
             ) {
-                $currentFileLines[] = $line;
+                $fileLinesMap[$currentFile][] = $line;
             }
         }
 
-        return $res;
+        return implode(
+            PHP_EOL,
+            array_merge(
+                ...array_values(
+                    array_filter(
+                        $fileLinesMap,
+                        function ($file) {
+                            return count($file) > 1;
+                        },
+                    )
+                )
+            ),
+        ) . PHP_EOL;
     }
 }

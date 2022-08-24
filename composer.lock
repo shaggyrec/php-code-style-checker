@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "033ae8c15902c1f553fc3f16d2229a36",
+    "content-hash": "9ca9a8cee4ac3c7ae61e316ebe749859",
     "packages": [
         {
             "name": "monolog/monolog",
@@ -158,17 +158,17 @@
             "time": "2021-07-14T16:46:02+00:00"
         },
         {
-            "name": "squizlabs/php_codesniffer",
-            "version": "3.7.1",
+            "name": "shaggyrec/php_codesniffer",
+            "version": "3.7.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "1359e176e9307e906dc3d890bcc9603ff6d90619"
+                "url": "https://github.com/shaggyrec/PHP_CodeSniffer.git",
+                "reference": "165a2083a0ef3b4090e8a1858b1221a48a2d9c48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/1359e176e9307e906dc3d890bcc9603ff6d90619",
-                "reference": "1359e176e9307e906dc3d890bcc9603ff6d90619",
+                "url": "https://api.github.com/repos/shaggyrec/PHP_CodeSniffer/zipball/165a2083a0ef3b4090e8a1858b1221a48a2d9c48",
+                "reference": "165a2083a0ef3b4090e8a1858b1221a48a2d9c48",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "source": "https://github.com/squizlabs/PHP_CodeSniffer",
                 "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
             },
-            "time": "2022-06-18T07:21:10+00:00"
+            "time": "2022-08-24T11:26:02+00:00"
         }
     ],
     "packages-dev": [
