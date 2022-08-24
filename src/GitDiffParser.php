@@ -2,6 +2,8 @@
 
 namespace Shaggyrec\CodeStyleChecker;
 
+use Shaggyrec\CodeStyleChecker\Exception\NoGitDiff;
+
 class GitDiffParser
 {
     const FILE_LINE_PREFIX = '+++ b/';
@@ -26,6 +28,7 @@ class GitDiffParser
 
     /**
      * @param string $diff
+     * @throws NoGitDiff
      * @return CheckingFiles
      */
     public function parse(string $diff): CheckingFiles
@@ -35,7 +38,18 @@ class GitDiffParser
             $this->processLine($line);
         } while (($line = strtok(PHP_EOL)) !== false);
 
-        return new CheckingFiles($this->result);
+        if ($this->result === []) {
+            throw new NoGitDiff('No changes found');
+        }
+
+        return new CheckingFiles(
+            array_filter(
+                $this->result,
+                function ($file) {
+                    return $file !== [];
+                }
+            ),
+        );
     }
 
     /**

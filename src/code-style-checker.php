@@ -7,6 +7,7 @@ use Monolog\Level;
 use Monolog\Logger;
 use Shaggyrec\CodeStyleChecker\Exception\CodeStyle;
 use Shaggyrec\CodeStyleChecker\Exception\MandatoryOption;
+use Shaggyrec\CodeStyleChecker\Exception\NoGitDiff;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -55,12 +56,15 @@ try {
     (new Checker($options->standard()))
         ->check(
             (
-                $options->hasOption(CliOptions::OPTION_DIFF)
-                    ? (new GitDiffParser())->parse(gitDiff($options->diff()))
-                    : new CheckingFiles(explode(PHP_EOL, $options->src()))
+            $options->hasOption(CliOptions::OPTION_DIFF)
+                ? (new GitDiffParser())->parse(gitDiff($options->diff()))
+                : new CheckingFiles(explode(PHP_EOL, $options->src()))
             )->rootPath(getRootPath()),
             $options->isDebug(),
         );
+    exit(0);
+} catch (NoGitDiff $exception) {
+    $logger->info($exception->getMessage());
     exit(0);
 } catch (CodeStyle $exception) {
     echo $exception->getMessage();

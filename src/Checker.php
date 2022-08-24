@@ -78,11 +78,16 @@ class Checker
         $arrayErrorsLines = explode(PHP_EOL, $phpCsResult);
 
         $currentFile = null;
+        $currentFileLines = [];
         foreach ($arrayErrorsLines as $line) {
             $cleanLine = removeTerminalCodes($line);
             if (str_starts_with($cleanLine, self::RESULT_LINE_FILE_PREFIX)) {
                 $currentFile = str_replace(self::RESULT_LINE_FILE_PREFIX, '', $cleanLine);
-                $res .=  PHP_EOL . $line . PHP_EOL;
+                if (count($currentFileLines) > 1) {
+                    $res .= implode(PHP_EOL, $currentFileLines);
+                }
+                $currentFileLines = [];
+                $currentFileLines[] =  PHP_EOL . $line;
                 continue;
             }
 
@@ -91,7 +96,7 @@ class Checker
                 && preg_match('/^(\d+) \| /', trim($cleanLine), $matches)
                 && in_array((int)$matches[1], $files->lines($currentFile))
             ) {
-                $res .= $line . PHP_EOL;
+                $currentFileLines[] = $line;
             }
         }
 
