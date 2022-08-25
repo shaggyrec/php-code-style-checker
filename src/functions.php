@@ -74,7 +74,7 @@ function removeTerminalCodes(string $string): string
  * @param bool $debug
  * @return bool|string
  */
-function phpcs(string $standard, array $files, bool $debug): bool|string
+function phpcs(string $standard, array $files, bool $debug, bool $colors): bool|string
 {
     ini_set('output_buffering', 4096);
     ob_start();
@@ -86,7 +86,7 @@ function phpcs(string $standard, array $files, bool $debug): bool|string
                 ? 's'
                 : ''
         ),
-        '--colors',
+        ...($colors ? ['--colors'] : []),
         ...$files,
     ];
     include __DIR__ . '/../vendor/bin/phpcs';

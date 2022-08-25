@@ -71,10 +71,22 @@ class CheckingFiles
 
     /**
      * @param string $file
+     * @return array
      */
     public function lines(string $file): array
     {
-        return $this->lines[$file] ?? $this->lines[str_replace($this->rootPath, '', $file)];
+        return $this->lines[$file]
+            ?? $this->lines[str_replace($this->rootPath, '', $file)]
+            ?? $this->lines[
+                array_values(
+                    array_filter(
+                        $this->files,
+                        function (string $filename) use ($file) {
+                            return str_ends_with($file, $filename);
+                        },
+                    )
+                )[0]
+            ] ?? [];
     }
 
     /**

@@ -61,6 +61,7 @@ try {
                 : new CheckingFiles(explode(PHP_EOL, $options->src()))
             )->rootPath(getRootPath()),
             $options->isDebug(),
+            $options->isColors(),
         );
     exit(0);
 } catch (NoGitDiff $exception) {
