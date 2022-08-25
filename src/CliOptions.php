@@ -15,6 +15,7 @@ class CliOptions
     private const OPTION_LOG_TO = 'log';
     private const OPTION_STANDARD = 'standard';
     private const OPTION_DEBUG = 'debug';
+    private const OPTION_COLORS = 'colors';
 
     /**
      * @var array of options, passed to cli script
@@ -37,6 +38,7 @@ class CliOptions
                     self::OPTION_LOG_TO . ':',
                     self::OPTION_STANDARD . ':',
                     self::OPTION_DEBUG,
+                    self::OPTION_COLORS,
                 ]
             )
         );
@@ -97,6 +99,11 @@ class CliOptions
     public function isDebug(): bool
     {
         return $this->hasOption(self::OPTION_DEBUG);
+    }
+
+    public function isColors(): bool
+    {
+        return $this->hasOption(self::OPTION_COLORS);
     }
 
     /**

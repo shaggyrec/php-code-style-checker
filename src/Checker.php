@@ -19,13 +19,14 @@ class Checker
     /**
      * @param CheckingFiles $files
      * @param bool $debug
+     * @param bool $colors
      * @throws CodeStyle
      * @throws Exception\Checker
      * @return void
      */
-    public function check(CheckingFiles $files, bool $debug = false): void
+    public function check(CheckingFiles $files, bool $debug = false, bool $colors = false): void
     {
-        $result = $this->runPhpCS($files, $debug);
+        $result = $this->runPhpCS($files, $debug, $colors);
 
         if ($files->withLines()) {
             $result = self::filterRows($result, $files);
@@ -39,12 +40,13 @@ class Checker
     /**
      * @param CheckingFiles $files
      * @param bool $debug
+     * @param bool $colors
      * @throws Exception\Checker
      * @return bool|string|null
      */
-    private function runPhpCS(CheckingFiles $files, bool $debug = false): bool|string|null
+    private function runPhpCS(CheckingFiles $files, bool $debug = false, bool $colors = false): bool|string|null
     {
-        $result = phpcs($this->standard, $files->files(), $debug);
+        $result = phpcs($this->standard, $files->files(), $debug, $colors);
 
         if (!str_contains($result, self::RESULT_LINE_SUCCESS_DETECTION)) {
             throw new \Shaggyrec\CodeStyleChecker\Exception\Checker($result);
