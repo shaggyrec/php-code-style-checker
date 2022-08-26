@@ -1,6 +1,8 @@
 # PHP code-style checker
 
-Cli Util to check PHP code style.
+Cli Util to check PHP code style. 
+
+Using https://github.com/squizlabs/PHP_CodeSniffer but with possibility to check only git diff
 
 ## Usage 
 
